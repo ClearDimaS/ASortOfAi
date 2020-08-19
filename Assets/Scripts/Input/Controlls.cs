@@ -13,23 +13,12 @@ public class Controlls : MonoBehaviour
     }
 
     public static Action OnTrigger;
-    float lastTimePressed;
-    float doubleClickDefTime = 0.5f;
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (inputControlls.SpacePressed())
         {
-            if (NotDoubleClick()) 
-            {
-                lastTimePressed = Time.time;
-                OnTrigger?.Invoke();
-            }
+            OnTrigger?.Invoke();
         }
-    }
-
-    private bool NotDoubleClick()
-    {
-        return Time.time - lastTimePressed > doubleClickDefTime;
     }
 }

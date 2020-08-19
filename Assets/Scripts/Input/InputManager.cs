@@ -6,6 +6,6 @@ public class InputManager
 {
     public bool SpacePressed() 
     {
-        return Input.GetKey(KeyCode.Space);
+        return Input.GetKeyDown(KeyCode.Space);
     }
 }

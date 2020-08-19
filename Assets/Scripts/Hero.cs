@@ -18,8 +18,6 @@ public class Hero : MonoBehaviour
 
     IEnumerator coroutine;
 
-    private bool isMoving;
-
     private float stopDistance;
 
     private void Awake()
@@ -31,7 +29,7 @@ public class Hero : MonoBehaviour
 
         Controlls.OnTrigger += MoveToTarget;
 
-        stopDistance = 2.2f; // even if FrameRate drops to 30 fps it is still gonna work pretty well
+        stopDistance = GetComponent<RectTransform>().rect.width / 15.0f;
     }
 
     private void MoveToTarget()
@@ -47,17 +45,14 @@ public class Hero : MonoBehaviour
         }
         else 
         {
-            if (isMoving == false) 
+            float randFloat = UnityEngine.Random.Range(0.0f, 1.0f);
+            if (randFloat < ChangePlaceProbability)
             {
-                float randFloat = UnityEngine.Random.Range(0.0f, 1.0f);
-                if (randFloat < ChangePlaceProbability)
+                if (target != null)
                 {
-                    if (target != null)
-                    {
-                        InteractableObjectsStatesController.instance.RealeseObject(target);
-                    }
-                    SetNewTarget();
+                    InteractableObjectsStatesController.instance.RealeseObject(target);
                 }
+                SetNewTarget();
             }
         }
     }
@@ -68,8 +63,6 @@ public class Hero : MonoBehaviour
 
         if (coroutine == null)
         {
-            Controlls.OnTrigger -= MoveToTarget;
-            isMoving = true;
             coroutine = Move();
             StartCoroutine(coroutine);
         }
@@ -109,9 +102,5 @@ public class Hero : MonoBehaviour
         InteractableObjectsStatesController.instance.BusyObject(target);
 
         transform.up = (new Vector3(0.0f, 0.0f, 0.0f) - transform.localPosition).normalized;
-
-        Controlls.OnTrigger += MoveToTarget;
-
-        isMoving = false;
     }
 }
